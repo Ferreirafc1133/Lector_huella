@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <!-- Metaetiquetas requeridas -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="../../src/css/bootstrap.css">
+    <link rel="stylesheet" href="../../src/css/custom.css">
+
+    <title>Aplicación Web de Huellas Dactilares</title>
+</head>
+
+<body>
+    <!-- JavaScript opcional -->
+    <!-- jQuery primero, luego Popper.js, luego Bootstrap JS -->
+    <script src="../../src/js/jquery-3.5.0.min.js"></script>
+    <script src="../../src/js/bootstrap.bundle.js"></script>
+    <script src="../../src/js/es6-shim.js"></script>
+    <script src="../../src/js/websdk.client.bundle.min.js"></script>
+    <script src="../../src/js/fingerprint.sdk.min.js"></script>
+    <script src="../../src/js/custom.js"></script>
+
+    <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
+        <button id="verifyIdentityButton" type="button" class="btn btn-primary rounded-circle btn-circle" data-toggle="modal" data-target="#verifyIdentity" onclick="beginIdentification()">Verificar Identidad</button>
+    </div>
+    
+</body>
+
+
+<section>
+    <!-- Sección de Verificación de Identidad -->
+    <div id="verifyIdentity" class="modal fade" data-backdrop="static" tabindex="-1" aria-labelledby="verifyIdentityTitle" aria-hidden="true">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 class="modal-title my-text my-pri-color" id="verifyIdentityTitle">Verificación de Identidad</h3>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Cerrar" onclick="clearCapture()">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form action="#" onsubmit="return false">
+                        <div id="verifyIdentityStatusField" class="text-center">
+                            <!-- El estado de la verificación de identidad se mostrará aquí -->
+                        </div>
+                        <div class="form-row mt-3">
+                            <div class="col mb-3 mb-md-0 text-center">
+                                <label for="verifyReaderSelect" class="my-text7 my-pri-color">Elegir Lector de Huellas Dactilares</label>
+                                <select name="readerSelect" id="verifyReaderSelect" class="form-control" onclick="beginIdentification()">
+                                    <option selected>Seleccionar Lector de Huellas Dactilares</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-row mt-4">
+                            <div class="col mb-md-0 text-center">
+                                <label for="userIDVerify" class="my-text7 my-pri-color m-0">Especificar ID de Usuario</label>
+                                <select id="userIDVerify" class="form-control mt-1">
+                                    <option value="">USUARIOS</option>
+                                </select>
+                            </div>
+                            
+                        </div>
+                        <div class="form-row mt-3">
+                            <div class="col text-center">
+                                <p class="my-text7 my-pri-color mt-1">Capturar Dedo para Verificación</p>
+                            </div>
+                        </div>
+                        <div id="verificationFingers" class="form-row justify-content-center">
+                            <div id="verificationFinger" class="col mb-md-0 text-center">
+                                <span class="icon icon-indexfinger-not-enrolled" title="not_enrolled"></span>
+                            </div>
+                        </div>
+                        <div class="form-row mt-3" id="userDetails">
+                            <!-- Aquí se mostrarán los detalles del usuario -->
+                        </div>
+                        <div class="form-row m-3 mt-md-5 justify-content-center">
+                            <div class="col-4">
+                                <button class="btn btn-primary btn-block my-sec-bg my-text-button py-1" type="submit" onclick="captureForIdentify()">Iniciar Captura</button>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-primary btn-block my-sec-bg my-text-button py-1" type="submit" onclick="serverIdentify()">Identificar</button>
+                            </div>
+                            <div class="col-4">
+                                <button class="btn btn-secondary btn-outline-warning btn-block my-text-button py-1 border-0" type="button" onclick="clearCapture()">Limpiar</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <div class="form-row">
+                        <div class="col">
+                            <button class="btn btn-secondary my-text8 btn-outline-danger border-0" type="button" data-dismiss="modal" onclick="clearCapture()">Cerrar</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</html>
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        background-image: url('https://www.shutterstock.com/image-vector/attention-danger-symbol-on-dark-260nw-2204728543.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+    }
+    .btn-circle {
+        width: 200px; 
+        height: 200px; 
+        border-radius: 100px; 
+        font-size: 1.5rem; 
+        padding: 10px 16px; 
+        text-align: center; 
+        line-height: 1.5;
+        white-space: normal; 
+    }
+
+    .container {
+        height: 100vh;
+    }
+</style>
