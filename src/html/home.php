@@ -1,10 +1,7 @@
 <?php
 session_start();
+$logueado = isset($_SESSION['user']) && $_SESSION['user'] === true;
 
-if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
-    header('Location: ../../index.php');
-    exit;
-}
 ?>
 
 
@@ -40,16 +37,18 @@ if (!isset($_SESSION['user']) || $_SESSION['user'] !== true) {
     </div>
     <div class="container">
         <div id="controls" class="row justify-content-center mx-5 mx-sm-0 mx-lg-5">
-            <div class="col-sm mb-2 ml-sm-5">
-                <button id="createEnrollmentButton" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#createEnrollment" onclick="beginEnrollment()">Crear Inscripción</button>
-            </div>
             <div class="col-sm mb-2 mr-sm-5">
                 <button id="verifyIdentityButton" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#verifyIdentity" onclick="beginIdentification()">Verificar Identidad</button>
+            </div>
+            <?php if ($logueado): ?>
+            <div class="col-sm mb-2 ml-sm-5">
+                <button id="createEnrollmentButton" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#createEnrollment" onclick="beginEnrollment()">Crear Inscripción</button>
             </div>
         </div>
         <div class="col-sm mb-2 mr-sm-5">
             <button id="showRegistro" type="button" class="btn btn-success btn-block" data-toggle="modal" data-target="#verRegistro" onclick="showIdentification()">Ver Registros</button>
         </div>
+        <?php endif; ?>
     </div>
 </body>
 
