@@ -90,3 +90,4 @@ class database {
         call_user_func_array(array($statement, 'bind_param'), $param_value_reference);
     }
 }
+

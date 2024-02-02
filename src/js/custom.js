@@ -103,6 +103,7 @@ class Reader{
 
     setStatusField(statusFieldID){
         this.currentStatusField = statusFieldID;
+        
     }
 
     displayReader(){
@@ -145,6 +146,11 @@ class Hand{
         let middle_finger = this.middle_finger;
         return JSON.stringify({id, index_finger, middle_finger});
     }
+    generateFullHand2(){
+        let index_finger = this.index_finger;
+        let middle_finger = this.middle_finger;
+        return JSON.stringify({index_finger, middle_finger});
+    }
 }
 
 let myReader = new Reader();
@@ -157,6 +163,7 @@ function beginEnrollment(){
 function beginIdentification(){
     setReaderSelectField("verifyReaderSelect");
     myReader.setStatusField("verifyIdentityStatusField");
+    captureForIdentify();
 }
 
 function setReaderSelectField(fieldName){
@@ -206,8 +213,9 @@ function readyForEnroll(){
 * @returns {boolean}
 */
 function readyForIdentify() {
-    return ((document.getElementById("userIDVerify").value !== "") && (document.getElementById("verifyReaderSelect").value !== "Select Fingerprint Reader"));
+    return document.getElementById("verifyReaderSelect").value !== "Select Fingerprint Reader";
 }
+
 
 function clearCapture(){
     clearInputs();
@@ -219,7 +227,7 @@ function clearCapture(){
 
 function clearInputs(){
     document.getElementById("userID").value = "";
-    document.getElementById("userIDVerify").value = "";
+    //document.getElementById("userIDVerify").value = "";
     //let id = myReader.selectFieldID;
     //let selectField = document.getElementById(id);
     //selectField.innerHTML = `<option>Select Fingerprint Reader</option>`;
@@ -296,7 +304,7 @@ function getNextNotEnrolledID(){
     let verifyFingers = document.getElementById("verificationFingers");
 
     let enrollUserId = document.getElementById("userID").value;
-    let verifyUserId = document.getElementById("userIDVerify").value;
+    let verifyUserId = "ferreira";
 
     let indexFingerElement = findElementNotEnrolled(indexFingers);
     let middleFingerElement = findElementNotEnrolled(middleFingers);
@@ -338,7 +346,7 @@ function findElementNotEnrolled(element){
 
 function storeUserID(){
     let enrollUserId = document.getElementById("userID").value;
-    let identifyUserId = document.getElementById("userIDVerify").value;
+    let identifyUserId = "ferreira";
     myReader.currentHand.id = enrollUserId !== "" ? enrollUserId : identifyUserId;
 }
 
@@ -395,7 +403,7 @@ function serverIdentify() {
         return;
     }
 
-    let data = myReader.currentHand.generateFullHand();
+    let data = myReader.currentHand.generateFullHand2();
     let detailElement = document.getElementById("userDetails");
     let successMessage = "Identification Successful!";
     let failedMessage = "Identification Failed!. Try again";
@@ -432,6 +440,9 @@ function serverIdentify() {
 }
 window.onload = function() {
     cargarOpciones();
+    //beginIdentification();
+    //beginEnrollment();
+    
 };
 
 
@@ -443,7 +454,6 @@ function cargarOpciones() {
             try {
                 const data = JSON.parse(this.responseText);
                 const selector1 = document.getElementById('userID');
-                const selector2 = document.getElementById('userIDVerify');
                 const selector3 = document.getElementById('opcionSelector'); // Selector original
 
                 data.forEach(opcion => {
@@ -454,15 +464,6 @@ function cargarOpciones() {
                         option1.text = opcion.username;
                         selector1.appendChild(option1);
                     }
-
-                    // Para selector2
-                    if (selector2) {
-                        let option2 = document.createElement('option');
-                        option2.value = opcion.username;
-                        option2.text = opcion.username;
-                        selector2.appendChild(option2);
-                    }
-
                     // Para selector3
                     if (selector3) {
                         let option3 = document.createElement('option');

@@ -70,10 +70,10 @@ $logueado = isset($_SESSION['user']) && $_SESSION['user'] === true;
                         </div>
                         <div class="form-row mt-3">
                             <div class="col mb-3 mb-md-0 text-center">
-                                <label for="enrollReaderSelect" class="my-text7 my-pri-color">Elegir Lector de Huellas Dactilares</label>
-                                <select name="readerSelect" id="enrollReaderSelect" class="form-control" onclick="beginEnrollment()">
-                                    <option selected>Seleccionar Lector de Huellas Dactilares</option>
-                                </select>
+                            <label for="enrollReaderSelect" class="my-text7 my-pri-color">Elegir Lector de Huellas Dactilares</label>
+                            <select name="readerSelect" id="enrollReaderSelect" class="form-control" disabled onclick="beginEnrollment()">
+                                <option selected>Seleccionar Lector de Huellas Dactilares</option>
+                            </select>
                             </div>
                         </div>
                         <div class="form-row mt-2">
@@ -165,20 +165,19 @@ $logueado = isset($_SESSION['user']) && $_SESSION['user'] === true;
                         </div>
                         <div class="form-row mt-3">
                             <div class="col mb-3 mb-md-0 text-center">
-                                <label for="verifyReaderSelect" class="my-text7 my-pri-color">Elegir Lector de Huellas Dactilares</label>
-                                <select name="readerSelect" id="verifyReaderSelect" class="form-control" onclick="beginIdentification()">
-                                    <option selected>Seleccionar Lector de Huellas Dactilares</option>
-                                </select>
+                            <label for="verifyReaderSelect" class="my-text7 my-pri-color">Elegir Lector de Huellas Dactilares</label>
+                            <select name="readerSelect" id="verifyReaderSelect" class="form-control" disabled>
+                                <option selected>Seleccionar Lector de Huellas Dactilares</option>
+                            </select>
                             </div>
                         </div>
+                        
                         <div class="form-row mt-4">
                             <div class="col mb-md-0 text-center">
-                                <label for="userIDVerify" class="my-text7 my-pri-color m-0">Especificar ID de Usuario</label>
-                                <select id="userIDVerify" class="form-control mt-1">
+                                <select id="userIDVerify" class="form-control mt-1" style="display: none;">
                                     <option value="">USUARIOS</option>
                                 </select>
                             </div>
-                            
                         </div>
                         <div class="form-row mt-3">
                             <div class="col text-center">

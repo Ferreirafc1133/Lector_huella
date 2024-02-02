@@ -103,11 +103,11 @@ function createRecord($user_id) {
         return "failed in querydb";
     }
 }    
-function getUserFmds($user_id){
+function getUserFmds($plaza){
     $myDatabase = new database();
-    $sql_query = "select indexfinger, middlefinger from users WHERE username=?";
+    $sql_query = "select indexfinger, middlefinger, username from users WHERE plaza=?";
     $param_type = "s";
-    $param_array = [$user_id];
+    $param_array = [$plaza];
     $fmds = $myDatabase->select($sql_query, $param_type, $param_array);
     return json_encode($fmds);
 }
