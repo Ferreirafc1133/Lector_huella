@@ -1,9 +1,9 @@
+
 <?php
 session_start();
-$logueado = isset($_SESSION['user']) && $_SESSION['user'] === true;
+$privilege = $_SESSION['privilege'];
 
 ?>
-
 
 <!doctype html>
 <html lang="es">
@@ -40,7 +40,7 @@ $logueado = isset($_SESSION['user']) && $_SESSION['user'] === true;
             <div class="col-sm mb-2 mr-sm-5">
                 <button id="verifyIdentityButton" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#verifyIdentity" onclick="beginIdentification()">Verificar Identidad</button>
             </div>
-            <?php if ($logueado): ?>
+            <?php if ($privilege <= 1): ?>
             <div class="col-sm mb-2 ml-sm-5">
                 <button id="createEnrollmentButton" type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#createEnrollment" onclick="beginEnrollment()">Crear Inscripción</button>
             </div>
@@ -228,23 +228,28 @@ $logueado = isset($_SESSION['user']) && $_SESSION['user'] === true;
                     </button>
                 </div>
                 <div class="modal-body">
-                    <!-- Selector de fechas -->
-                    <div class="form-group">
-                        <label for="fechaSelector">Seleccionar fecha:</label>
-                        <input type="date" class="form-control" id="fechaSelector">
+                    <!-- Selector de rango de fechas -->
+                    <div class="form-row">
+                        <div class="form-group col-md-6">
+                            <label for="fechaInicio">Fecha de inicio:</label>
+                            <input type="date" class="form-control" id="fechaInicio">
+                        </div>
+                        <div class="form-group col-md-6">
+                            <label for="fechaFin">Fecha de fin:</label>
+                            <input type="date" class="form-control" id="fechaFin">
+                        </div>
                     </div>
-                    <!-- Dropdown para opciones adicionales -->
                     <div class="form-group">
                         <label for="opcionSelector">Seleccionar Empleado:</label>
                         <select class="form-control" id="opcionSelector">
                             <option value="todas">Todas</option>
-                            <!-- Las opciones adicionales se cargarán aquí -->
                         </select>
                     </div>
                     <!-- Botón para traer registros -->
                     <button type="button" class="btn btn-primary" onclick="traerRegistros()">Traer Registros</button>
                 </div>
                 <div class="modal-body" id="tablaRegistros">
+                    
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>

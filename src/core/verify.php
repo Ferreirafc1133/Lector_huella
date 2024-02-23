@@ -3,7 +3,6 @@ namespace fingerprint;
 
 require_once("../core/helpers/helpers.php");
 require_once("../core/querydb.php");
-
 if (!empty($_POST["data"])) {
     //echo "Data received successfully.\n"; 
 
@@ -19,8 +18,7 @@ if (!empty($_POST["data"])) {
     }
     $pre_reg_fmd_string = $user_data['index_finger'][0];
 
-    $plaza = 29; 
-    $hand_data = json_decode(getUserFmds($plaza), true);
+    $hand_data = json_decode(getUserFmds(), true);
     if (empty($hand_data)) {
         //echo "No fingerprint data found for plaza {$plaza}.\n";
         exit;
@@ -55,7 +53,7 @@ if (!empty($_POST["data"])) {
     }
 
     if (!$matchFound) {
-        echo "No fingerprint match found.\n"; // Mensaje de depuración
+        //echo "No fingerprint match found.\n"; // Mensaje de depuración
         echo json_encode("failed"); 
     }
 } else {

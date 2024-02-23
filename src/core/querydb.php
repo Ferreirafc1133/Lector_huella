@@ -1,6 +1,4 @@
 <?php
-
-
 namespace fingerprint;
 require_once("database.php");
 
@@ -25,52 +23,24 @@ function getAllUsernames() {
     return json_encode($usernames); // Devuelve solo JSON
 }
 
-/*
-function getRegistrosPorUsuarioYFecha($fecha, $usuario) {
-    $myDatabase = new database();
-    $sql_query = "";
-    $param_array = [];
-
-    if ($usuario) {
-        // Consulta para un usuario específico
-        $sql_query = "SELECT Usuario, MIN(Registro) AS Entrada, MAX(Registro) AS Salida 
-                      FROM registros 
-                      WHERE Usuario = ? AND DATE(Registro) = ?
-                      GROUP BY Usuario";
-        $param_array = [$usuario, $fecha];
-    } else {
-        // Consulta para todos los usuarios
-        $sql_query = "SELECT Usuario, MIN(Registro) AS Entrada, MAX(Registro) AS Salida 
-                      FROM registros 
-                      WHERE DATE(Registro) = ?
-                      GROUP BY Usuario";
-        $param_array = [$fecha];
-    }
-
-    $registros = $myDatabase->select($sql_query, "s", $param_array);
-    return json_encode($registros);
-}
-*/
-
-function getRegistrosPorUsuarioYFecha($fecha, $usuario) {
+function getRegistrosPorUsuarioYFecha($fechaInicio, $fechaFin, $usuario) {
     $myDatabase = new database();
     $sql_query = "";
 
-    if (!$usuario ) {
-        // Consulta para todos los usuarios
+    if (!$usuario) {
         $sql_query = "SELECT Usuario, MIN(Registro) AS Entrada, MAX(Registro) AS Salida 
                       FROM registros 
-                      WHERE DATE(Registro) = ?
+                      WHERE DATE(Registro) BETWEEN ? AND ?
                       GROUP BY Usuario";
-        $param_array = [$fecha];
-        $param_type = "s"; // Un solo parámetro de tipo string
+        $param_array = [$fechaInicio, $fechaFin];
+        $param_type = "ss"; 
     } else {
         $sql_query = "SELECT Usuario, MIN(Registro) AS Entrada, MAX(Registro) AS Salida 
                       FROM registros 
-                      WHERE Usuario = ? AND DATE(Registro) = ?
+                      WHERE Usuario = ? AND DATE(Registro) BETWEEN ? AND ?
                       GROUP BY Usuario";
-        $param_array = [$usuario, $fecha];
-        $param_type = "ss";
+        $param_array = [$usuario, $fechaInicio, $fechaFin];
+        $param_type = "sss"; 
     }
 
     error_log("Consulta SQL: " . $sql_query);
@@ -103,14 +73,13 @@ function createRecord($user_id) {
         return "failed in querydb";
     }
 }    
-function getUserFmds($plaza){
+function getUserFmds(){
     $myDatabase = new database();
-    $sql_query = "select indexfinger, middlefinger, username from users WHERE plaza=?";
-    $param_type = "s";
-    $param_array = [$plaza];
-    $fmds = $myDatabase->select($sql_query, $param_type, $param_array);
+    $sql_query = "select indexfinger, middlefinger, username from users";
+    $fmds = $myDatabase->select($sql_query);
     return json_encode($fmds);
 }
+
 
 function getUserDetails($user_id){
     $myDatabase = new database();
@@ -131,16 +100,19 @@ function getAllFmds(){
 function comprobarLogin($username, $password) {
     session_start();
     $myDatabase = new database();
-    $sql_query = "SELECT password FROM users WHERE username=?";
+    $sql_query = "SELECT password, privilege, plaza FROM users WHERE username=?";
     $param_type = "s";
     $param_array = [$username];
     $result = $myDatabase->select($sql_query, $param_type, $param_array);
 
     if ($result && count($result) > 0) {
         $hashed_password = $result[0]['password']; 
+        $privilege = $result[0]['privilege']; 
+        $plaza = $result[0]['plaza'];
         if (password_verify($password, $hashed_password)) {
-            $_SESSION['user'] = true;
-            return json_encode(["success" => "Inicio de sesión correcto."]);
+            $_SESSION['privilege'] = $privilege; 
+            $_SESSION['plaza'] = $plaza;
+            return ["success" => "Inicio de sesión correcto.", "session" => ["privilege" => $_SESSION['privilege'], "plaza" => $_SESSION['plaza']]];
         } else {
             return json_encode(["error" => "Clave incorrecta."]);
         }
@@ -148,6 +120,7 @@ function comprobarLogin($username, $password) {
         return json_encode(["error" => "Usuario no encontrado."]);
     }
 }
+
 function updatePassword($username, $newPassword) {
     $myDatabase = new database();
     $hashedPassword = password_hash($newPassword, PASSWORD_DEFAULT);
@@ -164,3 +137,13 @@ function updatePassword($username, $newPassword) {
         return ["error" => "No se pudo actualizar la contraseña."];
     }
 }
+
+function lectorID($plaza) {
+    $myDatabase = new database();
+    $sql_query = "select lector_huella from plazas WHERE id_plaza = ?";
+    $param_type = "s";
+    $param_array = [$plaza];
+    $ID = $myDatabase->select($sql_query, $param_type, $param_array);
+    return $ID;
+}
+

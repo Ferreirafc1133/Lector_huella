@@ -10,33 +10,6 @@
     <link rel="stylesheet" href="src/css/custom.css">
 
     <title>Aplicación Web de Huellas Dactilares</title>
-
-    <style>
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-        body {
-            background-image: url('https://static.videezy.com/system/resources/thumbnails/000/041/786/original/94.Data_screen.jpg');
-            background-size: cover;
-            background-repeat: no-repeat;
-            background-position: center center;
-            background-attachment: fixed;
-        }
-    
-        .btn-large {
-            width: 300px; /* Tamaño del botón */
-            height: 300px; /* Tamaño del botón */
-            border-radius: 80px; /* Redondeo para hacerlo circular */
-            font-size: 30px; /* Tamaño de fuente más grande */
-            padding: 10px 16px; /* Ajuste del padding para alinear el texto */
-        }
-    </style>
-    
-</head>
-
-<body>
     <script src="src/js/jquery-3.5.0.min.js"></script>
     <script src="src/js/bootstrap.bundle.js"></script>
     <script src="src/js/es6-shim.js"></script>
@@ -44,44 +17,165 @@
     <script src="src/js/fingerprint.sdk.min.js"></script>
     <script src="src/js/custom.js"></script>
 
-    <div class="container">
-        <!-- Botones de Login -->
-        <div class="container d-flex justify-content-center align-items-center" style="height: 100vh;">
-            <div class="text-center">
-                <button type="button" class="btn btn-primary rounded-circle btn-large" data-toggle="modal" data-target="#loginModal">Gerente</button>
-                <button type="button" class="btn btn-secondary rounded-circle btn-large" onclick="location.href='src/html/home.php'">Sin Credenciales</button>                
-            </div>
-        </div>
-        
+</head>
 
-    </div>
-
-    <!-- Modal de Login -->
-    <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="loginModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="loginModalLabel">Login Gerente</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <form id="loginForm">
-                        <div class="form-group">
-                            <label for="username">Usuario</label>
-                            <input type="text" class="form-control" id="username" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="password">Contraseña</label>
-                            <input type="password" class="form-control" id="password" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary" onclick="return manejarLogin()">Ingresar</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<body>
+    <div class="login-box">
+        <form id="loginForm" onsubmit="return manejarLogin()">
+          <div class="user-box">
+            <input type="text"  id="username" required>
+            <label>Usuario</label>
+          </div>
+          <div class="user-box">
+            <input type="password" id="password" required>
+            <label>Contraseña</label>
+          </div><center>
+            <button type="submit" class="login-button">SEND<span></span></button></center>
+        </form>
+      </div>
+    
+    
 </body>
 </html>
+
+<style>
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+    body {
+        background-image: url('https://png.pngtree.com/thumb_back/fh260/background/20200714/pngtree-modern-double-color-futuristic-neon-background-image_351866.jpg');
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-attachment: fixed;
+    }
+    .login-box {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 400px;
+        padding: 40px;
+        transform: translate(-50%, -50%);
+        background: rgba(24, 20, 20, 0.987);
+        box-sizing: border-box;
+        box-shadow: 0 15px 25px rgba(0,0,0,.6);
+        border-radius: 10px;
+    }
+
+    .login-box .user-box {
+        position: relative;
+    }
+
+    .login-box .user-box input {
+        width: 100%;
+        padding: 10px 0;
+        font-size: 16px;
+        color: #fff;
+        margin-bottom: 30px;
+        border: none;
+        border-bottom: 1px solid #fff;
+        outline: none;
+        background: transparent;
+    }
+
+    .login-box .user-box label {
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding: 10px 0;
+        font-size: 16px;
+        color: #fff;
+        pointer-events: none;
+        transition: .5s;
+    }
+
+    .login-box .user-box input:focus ~ label,
+    .login-box .user-box input:valid ~ label {
+        top: -20px;
+        left: 0;
+        color: #bdb8b8;
+        font-size: 12px;
+    }
+
+    .login-box form a {
+        position: relative;
+        display: inline-block;
+        padding: 10px 20px;
+        color: #ffffff;
+        font-size: 16px;
+        text-decoration: none;
+        text-transform: uppercase;
+        overflow: hidden;
+        transition: .5s;
+        margin-top: 40px;
+        letter-spacing: 4px
+    }
+
+    .login-box a:hover {
+        background: #03f40f;
+        color: #fff;
+        border-radius: 5px;
+        box-shadow: 0 0 5px #03f40f,
+                    0 0 25px #03f40f,
+                    0 0 50px #03f40f,
+                    0 0 100px #03f40f;
+    }
+
+    .login-box a span {
+        position: absolute;
+        display: block;
+    }
+
+    @keyframes btn-anim1 {
+        0% {
+            left: -100%;
+        }
+
+        50%,100% {
+            left: 100%;
+        }
+    }
+
+    .login-box a span:nth-child(1) {
+        bottom: 2px;
+        left: -100%;
+        width: 100%;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, #03f40f);
+        animation: btn-anim1 2s linear infinite;
+    }
+    .login-box button.login-button {
+    position: relative;
+    display: inline-block;
+    padding: 10px 20px;
+    color: #ffffff;
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: .5s;
+    margin-top: 40px;
+    letter-spacing: 4px;
+    background: transparent;
+    border: 2px solid #03f40f;
+    cursor: pointer;
+    border-radius: 6%; 
+}
+
+.login-box button.login-button:hover {
+    background: #03f40f;
+    color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 5px #03f40f,
+                0 0 25px #03f40f,
+                0 0 50px #03f40f,
+                0 0 100px #03f40f;
+}
+
+.login-box button.login-button:active {
+    background: #029e0f;
+}
+
+</style>

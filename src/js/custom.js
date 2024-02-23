@@ -107,6 +107,45 @@ class Reader{
     }
 
     displayReader(){
+        let readers = this.reader.getInfo();
+        let id = this.selectFieldID;
+        let selectField = document.getElementById(id);
+        selectField.innerHTML = `<option>Select Fingerprint Reader</option>`;
+    
+        let xhttp = new XMLHttpRequest();
+        xhttp.onreadystatechange = function() {
+            if (this.readyState === 4 && this.status === 200) {
+                
+                let expectedReaderId = this.responseText.trim();; 
+
+                readers.then(function(availableReaders){
+                    if(availableReaders.length > 0){
+                        showMessage("");
+                        let found = false;
+                        for(let reader of availableReaders){
+                            console.log("Lector conectado: ", reader);
+                            if(reader === expectedReaderId) {
+                                selectField.innerHTML += `<option value="${reader}" selected>${reader}</option>`;
+                                found = true;
+                            }
+                        }
+                        if(!found){
+                            showMessage("El lector no es el registrado para la plaza.");
+                            console.log("Lector esperado: ", expectedReaderId);
+                        }
+                    }
+                    else{
+                        showMessage("El lector no se reconoce.");
+                    }
+                });
+            }
+        };
+    
+        xhttp.open("GET", "../../src/core/lectorId.php", true); 
+        xhttp.send();
+    }
+   /*
+    displayReader(){
         let readers = this.reader.getInfo();  // grab available readers here
         let id = this.selectFieldID;
         let selectField = document.getElementById(id);
@@ -115,6 +154,7 @@ class Reader{
             if(availableReaders.length > 0){
                 showMessage("");
                 for(let reader of availableReaders){
+                    console.log("Lector conectado: ", reader);
                     selectField.innerHTML += `<option value="${reader}" selected>${reader}</option>`;
                 }
             }
@@ -123,6 +163,7 @@ class Reader{
             }
         })
     }
+    */
 }
 
 class Hand{
@@ -429,6 +470,7 @@ function serverIdentify() {
                 }
                 else {
                     showMessage(failedMessage);
+                    alert('Vuelva a poner el dedo')
                 }
             }
         }
@@ -438,6 +480,8 @@ function serverIdentify() {
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
     xhttp.send(payload);
 }
+
+
 window.onload = function() {
     cargarOpciones();
     //beginIdentification();
@@ -485,7 +529,8 @@ function cargarOpciones() {
 }
 
 function traerRegistros() {
-    let fechaSeleccionada = document.getElementById('fechaSelector').value;
+    let fechaInicio = document.getElementById('fechaInicio').value;
+    let fechaFin = document.getElementById('fechaFin').value;
     let empleadoSeleccionado = document.getElementById('opcionSelector').value;
 
     let xhttp = new XMLHttpRequest();
@@ -494,12 +539,10 @@ function traerRegistros() {
             mostrarRegistrosEnTabla(JSON.parse(this.responseText));
         }
     };
-
     xhttp.open("POST", "../core/registros.php", true);
     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-    xhttp.send("fecha=" + fechaSeleccionada + "&empleado=" + empleadoSeleccionado);
+    xhttp.send("fechaInicio=" + fechaInicio + "&fechaFin=" + fechaFin + "&empleado=" + empleadoSeleccionado);
 }
-
 function formatoFechaHora(fechaHoraStr) {
     let fechaHora = new Date(fechaHoraStr);
     let opciones = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', hour12: true };
@@ -530,15 +573,17 @@ function manejarLogin() {
 
         xhttp.onreadystatechange = function() {
             if (this.readyState === 4 && this.status === 200) {
-                var respuesta = this.responseText;
-                window.location.href = 'src/html/home.php';
-                console.log(respuesta); 
+                var respuesta = JSON.parse(this.responseText);
+                if (respuesta.success) {
+                    window.location.href = 'src/html/home.php';
+                } else if (respuesta) {
+                    alert(respuesta);
+                }
             }
         };
 
         xhttp.open("POST", "src/core/logearse.php", true);
         xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-
         xhttp.send("username=" + encodeURIComponent(username) + "&password=" + encodeURIComponent(password));
     } else {
         alert('Por favor, introduce usuario y contraseña');
@@ -546,6 +591,7 @@ function manejarLogin() {
 
     return false;
 }
+
 
 function cambiarPassword() {
     var username = document.getElementById('username').value;
@@ -575,4 +621,6 @@ function cambiarPassword() {
 
 function cerrarSesion() {
     window.location.href = '../core/cerrarSesion.php';
+    session_destroy();
+
 }
