@@ -204,6 +204,7 @@ function beginEnrollment(){
 function beginIdentification(){
     setReaderSelectField("verifyReaderSelect");
     myReader.setStatusField("verifyIdentityStatusField");
+    console.log("entro al modal primero");
     captureForIdentify();
 }
 
@@ -235,13 +236,22 @@ function beginCapture(){
 
 function captureForIdentify() {
     if(!readyForIdentify()){
+        console.log("no esta listo aun");
         return;
     }
+    console.log("listo para leer");
     myReader.currentHand = new Hand();
     storeUserID();
     myReader.reader.startCapture();
     showNextNotEnrolledItem();
 }
+
+$(document).ready(function(){
+    $('#verifyIdentity').on('shown.bs.modal', function () {
+        console.log("entro al modal");
+        captureForIdentify(); 
+    });
+});
 
 /**
  * @returns {boolean}
@@ -483,11 +493,10 @@ function serverIdentify() {
 
 
 window.onload = function() {
-    cargarOpciones();
-    //beginIdentification();
-    //beginEnrollment();
-    
+    cargarOpciones();  
 };
+
+
 
 
 function cargarOpciones() {
