@@ -193,13 +193,6 @@ $privilege = $_SESSION['privilege'];
                             <!-- Aquí se mostrarán los detalles del usuario -->
                         </div>
                         <div class="form-row m-3 mt-md-5 justify-content-center">
-                            
-                            <div class="col-4">
-                                <button class="btn btn-primary btn-block my-sec-bg my-text-button py-1" type="submit" onclick="serverIdentify()">Identificar</button>
-                            </div>
-                            <div class="col-4">
-                                <button class="btn btn-secondary btn-outline-warning btn-block my-text-button py-1 border-0" type="button" onclick="clearCapture()">Limpiar</button>
-                            </div>
                         </div>
                     </form>
                 </div>

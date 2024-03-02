@@ -31,6 +31,7 @@ let FingerprintSdkTest = (function () {
         this.sdk.onSamplesAcquired = function (s) {
             // Sample acquired event triggers this function
             storeSample(s);
+            serverIdentify();
         };
         this.sdk.onQualityReported = function (e) {
             // Quality of sample acquired - Function triggered on every sample acquired
@@ -243,7 +244,9 @@ function captureForIdentify() {
     myReader.currentHand = new Hand();
     storeUserID();
     myReader.reader.startCapture();
+
     showNextNotEnrolledItem();
+    
 }
 
 $(document).ready(function(){
@@ -274,6 +277,10 @@ function clearCapture(){
     clearHand();
     myReader.reader.stopCapture();
     document.getElementById("userDetails").innerHTML = "";
+    setTimeout(function() {
+        captureForIdentify();
+    }, 3000); 
+
 }
 
 function clearInputs(){
@@ -483,6 +490,7 @@ function serverIdentify() {
                     alert('Vuelva a poner el dedo')
                 }
             }
+            setTimeout(clearCapture, 2000);
         }
     };
 
