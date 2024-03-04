@@ -279,7 +279,7 @@ function clearCapture(){
     document.getElementById("userDetails").innerHTML = "";
     setTimeout(function() {
         captureForIdentify();
-    }, 3000); 
+    }, 1000); 
 
 }
 
@@ -490,7 +490,7 @@ function serverIdentify() {
                     alert('Vuelva a poner el dedo')
                 }
             }
-            setTimeout(clearCapture, 2000);
+            setTimeout(clearCapture, 1000);
         }
     };
 
